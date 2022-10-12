@@ -51,7 +51,10 @@ function App() {
         })} */}
         <input onChange={handleInputChange}></input>
         <button onClick={() => getOneTruck()}> get truck by id </button>
-        <button onClick={() => getTrucksApiResponse()}> clickme to get other api response hell yeah! </button>
+        <button onClick={() => getTrucksApiResponse()}>
+          {" "}
+          clickme to get other api response hell yeah!{" "}
+        </button>
       </header>
     </div>
   );

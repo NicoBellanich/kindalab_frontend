@@ -19,6 +19,12 @@
   color: white;
 }
 
+.map-container{
+  width: 100%;
+  height: 100vh;
+  background-color: red;
+}
+
 
 
 .App-title { 
@@ -30,4 +36,12 @@
 
 .App-p { 
   font-size: large;
+}
+
+.App-container-inputs{
+  display: flex;
+}
+
+.App-inputs{
+  margin: 5%;
 }
