@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
 import NumbersIcon from "@mui/icons-material/Numbers";
@@ -12,26 +12,38 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 
 import { MapSection } from "./MapSection.js";
-import useWindowDimensions from "./useWindowDimension.js"
+import useWindowDimensions from "./useWindowDimension.js";
 
 function App() {
   const [stNumberToAskFor, setStNumberToAskFor] = useState("");
   const [stNumberError, setStNumberError] = useState(false);
   const [stNameToAskFor, setStNameToAskFor] = useState("");
   const [searchActive, setSearchActive] = useState(false);
-  const [searchResult, setSearchResult] = useState(null);
+  const [closerDistance, setCloserDistance] = useState(null);
   const { height, width } = useWindowDimensions();
 
-  const [isDesktopSize,setIsDesktopSize] = useState(null)
+  const [initialLatitude, setInitialLatitude] = useState(null);
+  const [initialLongitude, setInitialLongitude] = useState(null);
+  const [finalLatitude, setFinalLatitude] = useState(null);
+  const [finalLongitude, setFinalLongitude] = useState(null);
+
+  // just for start, validate between desktop and not desktop size only
+  const [isDesktopSize, setIsDesktopSize] = useState(null);
 
   useEffect(() => {
-    if (width > 600){
-      setIsDesktopSize(true)
-    }else{
-      setIsDesktopSize(false)
-    }
+    setInitialLatitude(37.7424951959228);
+    setInitialLongitude(-122.39161759509756);
+    setFinalLatitude(37.7424951959228);
+    setFinalLongitude(-122.39161759509756);
+  }, []);
 
-  }, [width,height]);
+  useEffect(() => {
+    if (width > 600) {
+      setIsDesktopSize(true);
+    } else {
+      setIsDesktopSize(false);
+    }
+  }, [width, height]);
 
   const handlestNumberInputChange = (e) => {
     setStNumberToAskFor(e.target.value);
@@ -51,7 +63,11 @@ function App() {
       )
       .then((result) => {
         console.log(result);
-        setSearchResult(result.data);
+        setCloserDistance(result.data.closerKMDistance);
+        setInitialLatitude(result.data.initialLatitude);
+        setInitialLongitude(result.data.initialLongitude);
+        setFinalLatitude(result.data.finalLatitude);
+        setFinalLongitude(result.data.finalLongitude);
       })
       .catch((e) => {
         console.log(e);
@@ -111,7 +127,9 @@ function App() {
               />
             </Grid>
             <Grid item xs={12}>
-              <p className="App-p">{searchResult ?? ""}</p>
+              <p className="App-p">
+                {closerDistance && `Closer distance is ${closerDistance ?? ""} km`}
+              </p>
             </Grid>
             <Grid item xs={12}>
               {!searchActive ? (
@@ -129,10 +147,10 @@ function App() {
         </Box>
       </div>
       <MapSection
-        initLat={37.7424951959228}
-        initLon={-122.39161759509756}
-        finishLat={37.7424951959228}
-        finishLon={-122.39161759509756}
+        initialLatitude={initialLatitude}
+        initialLongitude={initialLongitude}
+        finalLatitude={finalLatitude}
+        finalLongitude={finalLongitude}
       />
     </div>
   );
