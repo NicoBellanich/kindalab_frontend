@@ -9,7 +9,7 @@
 
 
 .App-header {
-  background-color: #282c34;
+  background-color: white;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -17,6 +17,7 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  padding: 10%;
 }
 
 .map-container{
@@ -31,11 +32,13 @@
 
   padding: 5%;
   font-size: 4vh;
+  color: #2196f3;
 
 }
 
 .App-p { 
   font-size: large;
+  color: black;
 }
 
 .App-container-inputs{
@@ -44,4 +47,5 @@
 
 .App-inputs{
   margin: 5%;
+  color: white;
 }
