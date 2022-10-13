@@ -12,7 +12,7 @@ export function MapSection({
   finalLongitude,
 }) {
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyD9NcAPaKmfcBbmdvulwtvNs1-0k-Ds8mA",
+    googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
   });
   const { height, width } = useWindowDimensions();
   const [isDesktopSize, setIsDesktopSize] = useState(null);
