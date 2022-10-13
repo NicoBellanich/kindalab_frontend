@@ -1,7 +1,6 @@
 import "./App.css";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import axios from "axios";
-import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 import TextField from "@mui/material/TextField";
 import NumbersIcon from "@mui/icons-material/Numbers";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -12,12 +11,27 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 
+import { MapSection } from "./MapSection.js";
+import useWindowDimensions from "./useWindowDimension.js"
+
 function App() {
   const [stNumberToAskFor, setStNumberToAskFor] = useState("");
   const [stNumberError, setStNumberError] = useState(false);
   const [stNameToAskFor, setStNameToAskFor] = useState("");
   const [searchActive, setSearchActive] = useState(false);
   const [searchResult, setSearchResult] = useState(null);
+  const { height, width } = useWindowDimensions();
+
+  const [isDesktopSize,setIsDesktopSize] = useState(null)
+
+  useEffect(() => {
+    if (width > 600){
+      setIsDesktopSize(true)
+    }else{
+      setIsDesktopSize(false)
+    }
+
+  }, [width,height]);
 
   const handlestNumberInputChange = (e) => {
     setStNumberToAskFor(e.target.value);
@@ -45,11 +59,6 @@ function App() {
       .finally(() => setSearchActive(false));
   };
 
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyD9NcAPaKmfcBbmdvulwtvNs1-0k-Ds8mA",
-  });
-
-  if (!isLoaded) return <div> LOADING </div>;
   return (
     <div className="App">
       <div className="App-header">
@@ -64,7 +73,7 @@ function App() {
                 closer food truck
               </p>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={isDesktopSize ? 9 : 12}>
               <TextField
                 required
                 fullWidth
@@ -81,7 +90,7 @@ function App() {
                 }}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={isDesktopSize ? 3 : 12}>
               <TextField
                 required
                 fullWidth
@@ -102,7 +111,7 @@ function App() {
               />
             </Grid>
             <Grid item xs={12}>
-              <p className="App-p">{searchResult ?? ''}</p>
+              <p className="App-p">{searchResult ?? ""}</p>
             </Grid>
             <Grid item xs={12}>
               {!searchActive ? (
@@ -119,16 +128,12 @@ function App() {
           </Grid>
         </Box>
       </div>
-      <div>
-        <h1>Map</h1>
-        <GoogleMap
-          zoom={10}
-          center={{ lat: 44, lng: -80 }}
-          mapContainerClassName="map-container"
-        >
-          <Marker position={{ lat: 44, lng: -80 }} />
-        </GoogleMap>
-      </div>
+      <MapSection
+        initLat={37.7424951959228}
+        initLon={-122.39161759509756}
+        finishLat={37.7424951959228}
+        finishLon={-122.39161759509756}
+      />
     </div>
   );
 }
